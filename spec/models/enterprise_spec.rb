@@ -854,4 +854,18 @@ describe Enterprise do
       end
     end
   end
+
+  describe "delete logo" do
+    let(:enterprise) { create(:enterprise, logo: Rails.root.join('lib/seed_data/carrots.jpg').open) }
+    
+    it "not deleted by default" do
+      expect(enterprise.delete_logo).to eq "0"
+    end
+
+    it "nil when deletes" do
+      enterprise.delete_logo = "1"
+      enterprise.save!
+      expect(enterprise.logo.present?).to be false      
+    end
+  end
 end

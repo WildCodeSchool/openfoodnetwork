@@ -1,4 +1,5 @@
 class Enterprise < ActiveRecord::Base
+  attr_accessor :delete_logo, :delete_promo_image
   SELLS = %w(unspecified none own any)
   SHOP_TRIAL_LENGTH = 30
   ENTERPRISE_SEARCH_RADIUS = 100
@@ -72,6 +73,7 @@ class Enterprise < ActiveRecord::Base
   validates_length_of :description, :maximum => 255
 
   before_save :confirmation_check, if: lambda { email_changed? }
+  before_save :delete_logo? , :delete_promo_image?
 
   before_validation :initialize_permalink, if: lambda { permalink.nil? }
   before_validation :ensure_owner_is_manager, if: lambda { owner_id_changed? && !owner_id.nil? }
@@ -339,6 +341,22 @@ class Enterprise < ActiveRecord::Base
     abn.present?
   end
 
+  def delete_logo
+    @delete_logo ||= '0'
+  end
+
+  def delete_logo=(value)
+    @delete_logo = value
+  end
+
+  def delete_promo_image
+    @delete_promo_image ||= '0'
+  end
+
+  def delete_promo_image=(value)
+    @delete_promo_image = value
+  end
+
   protected
 
   def devise_mailer
@@ -346,6 +364,16 @@ class Enterprise < ActiveRecord::Base
   end
 
   private
+
+
+  def delete_logo?
+    self.logo.clear if delete_logo == "1"
+  end
+  
+  def delete_promo_image?
+    self.promo_image.clear if delete_promo_image == "1"
+  end
+
 
   def name_is_unique
     dups = Enterprise.where(name: name)

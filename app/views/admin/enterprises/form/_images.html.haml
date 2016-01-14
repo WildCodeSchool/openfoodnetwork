@@ -4,7 +4,12 @@
     %br
     100 x 100 pixels
   .omega.eight.columns
-    = image_tag @object.logo(:medium) if @object.logo.present?
+    - if @object.logo.present?
+      #enterprise_logo= image_tag @object.logo(:medium)
+      %p
+        = f.check_box :delete_logo
+        = f.label t(:admin_enterprise_image_delete)
+    %br
     = f.file_field :logo
 .row
   .alpha.three.columns
@@ -15,5 +20,10 @@
     The promo image is displayed at the top of an enterprise's profile page and pop-ups.
 
   .omega.eight.columns
-    = image_tag @object.promo_image(:large) if @object.promo_image.present?
+    - if @object.promo_image.present?
+      #enterprise_promo_image= image_tag @object.promo_image(:large)
+      %p
+        = f.check_box :delete_promo_image
+        = f.label t(:admin_enterprise_image_delete)
+    %br
     = f.file_field :promo_image

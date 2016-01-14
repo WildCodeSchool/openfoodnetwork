@@ -112,6 +112,11 @@ FactoryGirl.define do
     sells "none"
   end
 
+  factory :enterprise_with_images, :parent => :enterprise do
+    logo File.open(File.expand_path('../../app/assets/images/logo-white.png', __FILE__))
+    promo_image File.open(File.expand_path('../../app/assets/images/logo-white.png', __FILE__))
+  end
+
   factory :distributor_enterprise, :parent => :enterprise do
     is_primary_producer false
     sells "any"
